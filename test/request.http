@@ -1,0 +1,38 @@
+### 
+POST http://localhost:4004/odata/v4/businesspartner/A_BusinessPartner
+Content-Type: application/json
+Authorization: Basic bp-admin 123
+
+{"BusinessPartner": "TEST11",
+ "FirstName": "Max",
+ "LastName": "Streifeneder", 
+ "BusinessPartnerIsBlocked": true,
+ "to_BusinessPartnerAddress": [{"BusinessPartner": "TEST11",
+ "AddressID": "HALLO"
+ }]
+}
+
+###
+GET http://localhost:4004/odata/v4/businesspartner/A_BusinessPartner('TEST11')?$expand=to_BusinessPartnerAddress
+Content-Type: application/json
+Authorization: Basic bp-admin 123
+
+###
+
+GET http://localhost:4004/odata/v4/admin/BusinessPartnerVerification?$expand=addresses&$filter=BusinessPartner eq 'TEST11'
+Content-Type: application/json
+Authorization: Basic bp-admin 123
+
+
+
+
+
+### 
+
+PATCH http://localhost:4004/odata/v4/businesspartner/A_BusinessPartner('TEST11')
+Content-Type: application/json
+Authorization: Basic bp-admin 123
+
+{ "BusinessPartner": "TEST11",
+ "BusinessPartnerIsBlocked": false
+ }
