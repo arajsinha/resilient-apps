@@ -69,3 +69,16 @@ export function _StatusValueAspect<TBase extends new (...args: any[]) => object>
 }
 export class StatusValue extends _StatusValueAspect(__.Entity) {}
 export class StatusValues extends Array<StatusValue> {}
+
+export function _StatusValues2Aspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
+  return class StatusValues2 extends Base {
+        code?: string;
+        value?: string;
+        criticality?: number;
+        updateCode?: boolean;
+    static actions: {
+    }
+  };
+}
+export class StatusValues2 extends _StatusValues2Aspect(__.Entity) {}
+export class StatusValues2_ extends Array<StatusValues2> {}

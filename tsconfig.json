@@ -1,26 +1,28 @@
 {
-  "compilerOptions": {
-      "target": "es6",
-      "module": "commonjs",
-      "outDir": "./gen/srv/srv",
-      "rootDir": "./",
-      "baseUrl": "./",
-      "moduleResolution": "node",
-      "skipLibCheck": true,
-      "preserveConstEnums": true,
-      "sourceMap": false,
-      "allowJs": true,
-      "strict": true,
-      "strictNullChecks": false,
-      "strictPropertyInitialization": false,
-      "lib": [
-          "ES2017",
-          "DOM"
-      ],
-      "esModuleInterop": true
-  },
-  "include": [
-      "./srv/**/*"
-, "test"  ]
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "outDir": "./gen/srv",
+        "rootDirs": ["./srv","./@cds-models"],
+        "baseUrl": "./",
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+        "preserveConstEnums": true,
+        "sourceMap": false,
+        "allowJs": true,
+        "strict": true,
+        "strictNullChecks": false,
+        "strictPropertyInitialization": false,
+        "lib": [
+            "ES2017",
+            "DOM"
+        ],
+        "esModuleInterop": true
+    },
+    "include": [
+        "./srv/**/*"
+    ],
+    "exclude": [
+        "./@cds-models/**/*"
+    ]
 }
-

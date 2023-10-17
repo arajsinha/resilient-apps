@@ -9,6 +9,8 @@ module.exports.Backlog = csn.Backlogs
 module.exports.Backlogs = csn.Backlogs
 module.exports.StatusValue = csn.StatusValues
 module.exports.StatusValues = csn.StatusValues
+module.exports.StatusValues2 = csn.StatusValues2
+module.exports.StatusValues2_ = csn.StatusValues2
 // events
 // actions
 // enums

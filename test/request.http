@@ -24,9 +24,6 @@ Content-Type: application/json
 Authorization: Basic bp-admin 123
 
 
-
-
-
 ### 
 
 PATCH http://localhost:4004/odata/v4/businesspartner/A_BusinessPartner('TEST11')
@@ -34,5 +31,13 @@ Content-Type: application/json
 Authorization: Basic bp-admin 123
 
 { "BusinessPartner": "TEST11",
- "BusinessPartnerIsBlocked": false
- }
+ "BusinessPartnerIsBlocked": false,
+ "to_BusinessPartnerAddress": [{"BusinessPartner": "TEST11",
+ "AddressID": "HALLO",
+ "HouseNumber": "2",
+ "CityName": "Munich",
+ "Country": "DE", 
+ "StreetName": "Straße", 
+ "PostalCode": "81371"
+ }]
+}

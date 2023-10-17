@@ -7,7 +7,7 @@ import type RemoteService from '@sap/cds/apis/services'
 import EventMessage from "@sap/cds/apis/services"
 import { Request, Service } from '@sap/cds/apis/services'
 import { BusinessPartner, BusinessPartnerAddresses, BusinessPartnerVerification, Address } from '../@cds-models/AdminService/index'
-
+// import type { BusinessPartnerVerification as BPVerification } from '../@cds-models/AdminService/index'
 interface IEventData {
     BusinessPartner: string
 }
@@ -29,8 +29,10 @@ class AdminService extends ApplicationService {
         this.bupaSrv.on('BusinessPartner.Changed', this.handleBusinessPartnerChanged)
 
         this.before(Event.SAVE, BusinessPartnerVerification, this.beforeSaveAddresses)
-        this.on(BusinessPartnerVerification.actions.block.name, BusinessPartnerVerification, this.blockBusinessPartner)
-        this.on(BusinessPartnerVerification.actions.unblock.name, BusinessPartnerVerification, this.unblockBusinessPartner)
+
+        const Testsdsd = require('../@cds-models/AdminService/index');
+        this.on('block', BusinessPartnerVerification, this.blockBusinessPartner)
+        this.on('unblock', BusinessPartnerVerification, this.unblockBusinessPartner)
 
         super.init()
     }
@@ -41,7 +43,7 @@ class AdminService extends ApplicationService {
     }
 
     private handleBusinessPartnerCreated = async (msg: Request) => {
-        console.log("bp create event");
+        console.log("BP CREATED!!!");
         const { BusinessPartner: businessPartnerID } = msg.data as IEventData
         if (await this.getLocalBusinessPartner(businessPartnerID, msg)) {
             console.warn(`BusinessPartner ${businessPartnerID} already persisted, no need to proceed`)
@@ -54,6 +56,7 @@ class AdminService extends ApplicationService {
 
         const verification = this.cloneRemoteToLocalBupa(businessPartnerS4)
         verification.verificationStatus_code = 'N'
+        console.log(verification);
         const localBupa = await this.createLocalBupa(msg, verification)
         if (!localBupa) {
             msg.error('400', 'technical error while inserting new Verification')
@@ -74,7 +77,7 @@ class AdminService extends ApplicationService {
             for (const addresses of verification.addresses) {
                 addresses.verifications_ID = localBusinessPartner.ID
             }
-            await this.updateLocalBupa(msg, verification)
+            this.updateLocalBupa(msg, verification)
         }
     }
 
@@ -93,7 +96,7 @@ class AdminService extends ApplicationService {
         try {
             const s4Bupa = await this.bupaSrv?.tx(req).run(
                 SELECT.one(BusinessPartner, (bp: any) => {
-                    bp.BusinessPartner, bp.BusinessPartnerIsBlocked, bp.FirstName, bp.LastName, bp.addresses('*')
+                    bp.BusinessPartner, bp.BusinessPartnerIsBlocked, bp.FirstName, bp.LastName, bp.addresses((address: Address) => { address.AddressID, address.CityName, address.Country, address.HouseNumber, address.StreetName, address.PostalCode })
                 }).where({ BusinessPartner: businessPartnerID })
             )
             return s4Bupa
@@ -103,7 +106,8 @@ class AdminService extends ApplicationService {
         }
     }
 
-    private cloneRemoteToLocalBupa(businessPartnerS4: BusinessPartner): BusinessPartnerVerification {
+    private cloneRemoteToLocalBupa(businessPartnerS4: BusinessPartner):
+        BusinessPartnerVerification {
         const verification = {} as BusinessPartnerVerification
         Object.assign(verification, businessPartnerS4)
         return verification
@@ -120,30 +124,9 @@ class AdminService extends ApplicationService {
     }
 
     private async updateLocalBupa(req: Request, verification: BusinessPartnerVerification): Promise<boolean> {
-
-        // const updateResult = await cds.tx(req).run(UPDATE.entity(BusinessPartnerVerification).set(verification).where({ BusinessPartner: verification.BusinessPartner }))
-        // if (!updateResult){
-        //     console.log(`Updating BusinessPartner Failed ${verification.BusinessPartner} in SAP HANA Cloud`)
-        //     return false
-        // }
-        // console.log(`Updated BusinessPartner ${verification.BusinessPartner} to the HDI Container on SAP HANA Cloud`)
-        // if (!updateResult) return false
-        // await cds.tx(async () => {
-        //     const updateResult = await cds.run(UPDATE.entity(BusinessPartnerVerification).set(verification).where({ BusinessPartner: verification.BusinessPartner }))
-        //     console.log(`Updating BusinessPartner ${verification.BusinessPartner} in SAP HANA Cloud`)
-        //     if (!updateResult) return false
-        // })
-
-        try {
-            cds.tx(async () => {
-                const updateResult = await cds.run(UPDATE.entity(BusinessPartnerVerification).set(verification).where({ BusinessPartner: verification.BusinessPartner }))
-                console.log(`Updating BusinessPartner ${verification.BusinessPartner} in SAP HANA Cloud`)
-                if (!updateResult) return false
-            })
-        } catch (error) {
-            console.log('erro1: ' + error)
-            return false
-        }
+        const updateResult = cds.tx(req).run(UPDATE.entity(BusinessPartnerVerification).set(verification).where({ BusinessPartner: verification.BusinessPartner }))
+        if (!updateResult) return false
+        console.log(`Updating BusinessPartner ${verification.BusinessPartner} in SAP HANA Cloud`)
         return true
 
     }

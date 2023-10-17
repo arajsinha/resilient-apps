@@ -46,6 +46,14 @@ entity StatusValues {
         updateCode  : Boolean;
 }
 
+
+entity StatusValues2 {
+    key code        : String;
+        value       : String;
+        criticality : Integer;
+        updateCode  : Boolean;
+}
+
 annotate Verifications with {
     BusinessPartner     @title : 'BusinessPartner ID'  @readonly;
     verificationStatus  @title : 'Verfication Status'  @assert.enum;

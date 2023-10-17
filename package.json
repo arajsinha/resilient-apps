@@ -12,32 +12,74 @@
     "@sap-cloud-sdk/util": "^3.5.0",
     "@sap/cds": "^7",
     "@sap/xb-msg-amqp-v100": "^0.9.58",
-    "express": "^4"
+    "express": "^4",
+    "@sap/xssec": "^3",
+    "passport": "^0",
+    "hdb": "^0.19.0"
   },
   "devDependencies": {
     "@cap-js/cds-typer": "^0",
     "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^7",
+    "@sap/ux-specification": "^1.108.15",
     "@types/chai-as-promised": "^7.1.6",
     "@types/jest": "^29.5.5",
     "@types/node": "^20.7.1",
     "axios": "^1.5.1",
+    "cds-plugin-ui5": "^0.2.1",
     "chai": "^4.3.10",
     "chai-as-promised": "^7.1.1",
     "chai-subset": "^1.6.0",
     "jest": "^29.7.0",
+    "rimraf": "^3.0.2",
     "ts-jest": "^29.1.1"
   },
   "scripts": {
     "start": "cds-serve",
     "tswatch": "cds-ts watch --profile hybrid",
     "test": "jest",
-    "mock": "cds-ts serve --with-mocks --in-memory"
+    "mock": "cds-ts serve --with-mocks --in-memory",
+    "watch-project1": "cds watch --open project1/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-businesspartnerverification": "cds watch --open businesspartnerverification/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-businesspartnerverify": "cds watch --open businesspartnerverify/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-bpverify": "cds watch --open ns.bpverify/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "undeploy": "cf undeploy btp-resilient-apps --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "build:cf": "npm run build:cds && npm run cleanup:ts && npm run build:ts && npm run build --prefix app/bpverify",
+    "deploy:live": "mbt build -e live.mtaext --mtar btp-resilient-apps.mtar && cf deploy mta_archives/btp-resilient-apps.mtar --retries 1",
+    "build:ts": "tsc",
+    "build:cds": "cds build --production",
+    "cleanup:ts": "npx rimraf ./gen/srv/srv/**/*.ts",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
   },
   "cds": {
     "requires": {
+      "db": {
+        "kind": "sqlite",
+        "[production]": {
+          "kind": "hana-cloud",
+          "pool": {
+            "acquireTimeoutMillis_doc": "max milliseconds an acquire call will wait for a resource before timing out. (default no limit), if supplied should non-zero positive integer.",
+            "acquireTimeoutMillis": 4000,
+            "softIdleTimeoutMillis_doc": "amount of time an object may sit idle in the pool before it is eligible for eviction by the idle object evictor (if any), with the extra condition that at least 'min idle' object instances remain in the pool. Default -1 (nothing can get evicted)",
+            "softIdleTimeoutMillis": 80000,
+            "evictionRunIntervalMillis_doc": "How often to run eviction checks. Default: 0 (does not run).",
+            "evictionRunIntervalMillis": 0,
+            "max_doc": "maximum number of resources to create at any given time. (default=1)",
+            "max": 3000,
+            "xmin_doc": "minimum number of resources to keep in pool at any given time. If this is set >= max, the pool will silently set the min to equal max. (default=0)",
+            "min": 10
+          }
+        },
+        "[hybrid]": {
+          "kind": "hana-cloud"
+        }
+      },
       "businesspartner": {
         "kind": "odata-v2",
-        "model": "srv/external/businesspartner"
+        "model": "srv/external/businesspartner",
+        "csrf": false,
+        "csrfInBatch": false
       },
       "messaging": {
         "kind": "file-based-messaging",
@@ -51,11 +93,27 @@
       },
       "OP_API_BUSINESS_PARTNER_SRV": {
         "kind": "odata-v2",
-        "model": "srv/external/OP_API_BUSINESS_PARTNER_SRV"
+        "model": "srv/external/OP_API_BUSINESS_PARTNER_SRV",
+        "csrf": false,
+        "csrfInBatch": false
+      },
+      "[production]": {
+        "auth": "xsuaa"
       }
     }
   },
   "imports": {
     "#cds-models/*": "./@cds-models/*/index.js"
-  }
+  },
+  "sapux": [
+    "app/project1",
+    "app/businesspartnerverification",
+    "app/businesspartnerverify",
+    "app/bpverify",
+    "app/bpverify",
+    "app/bpverify"
+  ],
+  "workspaces": [
+    "app/*"
+  ]
 }

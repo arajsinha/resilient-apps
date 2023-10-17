@@ -71,6 +71,20 @@ export function _A_AddressPhoneNumberAspect<TBase extends new (...args: any[]) =
 export class A_AddressPhoneNumber extends _A_AddressPhoneNumberAspect(__.Entity) {}
 export class A_AddressPhoneNumber_ extends Array<A_AddressPhoneNumber> {}
 
+export function _A_BPAddrDepdntIntlLocNumberAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
+  return class A_BPAddrDepdntIntlLocNumber extends Base {
+        BusinessPartner?: string;
+        AddressID?: string;
+        InternationalLocationNumber1?: string;
+        InternationalLocationNumber2?: string;
+        InternationalLocationNumber3?: string;
+    static actions: {
+    }
+  };
+}
+export class A_BPAddrDepdntIntlLocNumber extends _A_BPAddrDepdntIntlLocNumberAspect(__.Entity) {}
+export class A_BPAddrDepdntIntlLocNumber_ extends Array<A_BPAddrDepdntIntlLocNumber> {}
+
 export function _A_BPContactToAddressAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
   return class A_BPContactToAddress extends Base {
         RelationshipNumber?: string;
@@ -113,6 +127,15 @@ export function _A_BPContactToAddressAspect<TBase extends new (...args: any[]) =
         StreetSuffixName?: string;
         TaxJurisdiction?: string;
         TransportZone?: string;
+        AddressRepresentationCode?: string;
+        ContactRelationshipFunction?: string;
+        ContactRelationshipDepartment?: string;
+        Floor?: string;
+        ContactPersonBuilding?: string;
+        RoomNumber?: string;
+        ContactPersonPrfrdCommMedium?: string;
+        CorrespondenceShortName?: string;
+        InhouseMail?: string;
         to_EmailAddress?: __.Association.to.many<A_AddressEmailAddress_>;
         to_EmailAddress_AddressID?: string;
         to_EmailAddress_Person?: string;
@@ -256,6 +279,7 @@ export function _A_BusinessPartnerAspect<TBase extends new (...args: any[]) => o
         BirthDate?: string;
         BusinessPartnerBirthDateStatus?: string;
         BusinessPartnerBirthplaceName?: string;
+        BusinessPartnerDeathDate?: string;
         BusinessPartnerIsBlocked?: boolean;
         BusinessPartnerType?: string;
         ETag?: string;
@@ -270,6 +294,16 @@ export function _A_BusinessPartnerAspect<TBase extends new (...args: any[]) => o
         PersonNumber?: string;
         IsMarkedForArchiving?: boolean;
         BusinessPartnerIDByExtSystem?: string;
+        BusinessPartnerPrintFormat?: string;
+        BusinessPartnerOccupation?: string;
+        BusPartMaritalStatus?: string;
+        BusPartNationality?: string;
+        BusinessPartnerBirthName?: string;
+        BusinessPartnerSupplementName?: string;
+        NaturalPersonEmployerName?: string;
+        LastNamePrefix?: string;
+        LastNameSecondPrefix?: string;
+        Initials?: string;
         TradingPartner?: string;
         to_BuPaIdentification?: __.Association.to.many<A_BuPaIdentification_>;
         to_BuPaIdentification_BusinessPartner?: string;
@@ -279,7 +313,7 @@ export function _A_BusinessPartnerAspect<TBase extends new (...args: any[]) => o
         to_BuPaIndustry_IndustrySector?: string;
         to_BuPaIndustry_IndustrySystemType?: string;
         to_BuPaIndustry_BusinessPartner?: string;
-        to_BusinessPartnerAddress?: __.Association.to.many<A_BusinessPartnerAddress_>;
+        to_BusinessPartnerAddress?: __.Composition.of.many<A_BusinessPartnerAddress_>;
         to_BusinessPartnerAddress_BusinessPartner?: string;
         to_BusinessPartnerAddress_AddressID?: string;
         to_BusinessPartnerBank?: __.Association.to.many<A_BusinessPartnerBank_>;
@@ -296,6 +330,10 @@ export function _A_BusinessPartnerAspect<TBase extends new (...args: any[]) => o
         to_BusinessPartnerTax?: __.Association.to.many<A_BusinessPartnerTaxNumber_>;
         to_BusinessPartnerTax_BusinessPartner?: string;
         to_BusinessPartnerTax_BPTaxType?: string;
+        to_BusPartAddrDepdntTaxNmbr?: __.Association.to.many<A_BusPartAddrDepdntTaxNmbr_>;
+        to_BusPartAddrDepdntTaxNmbr_BusinessPartner?: string;
+        to_BusPartAddrDepdntTaxNmbr_AddressID?: string;
+        to_BusPartAddrDepdntTaxNmbr_BPTaxType?: string;
         to_Customer?: __.Association.to<A_Customer>;
         to_Customer_Customer?: string;
         to_Supplier?: __.Association.to<A_Supplier>;
@@ -358,6 +396,9 @@ export function _A_BusinessPartnerAddressAspect<TBase extends new (...args: any[
         to_AddressUsage_ValidityEndDate?: string;
         to_AddressUsage_AddressUsage?: string;
         to_AddressUsage_AddressID?: string;
+        to_BPAddrDepdntIntlLocNumber?: __.Association.to<A_BPAddrDepdntIntlLocNumber>;
+        to_BPAddrDepdntIntlLocNumber_BusinessPartner?: string;
+        to_BPAddrDepdntIntlLocNumber_AddressID?: string;
         to_EmailAddress?: __.Association.to.many<A_AddressEmailAddress_>;
         to_EmailAddress_AddressID?: string;
         to_EmailAddress_Person?: string;
@@ -469,6 +510,48 @@ export function _A_BusinessPartnerTaxNumberAspect<TBase extends new (...args: an
 export class A_BusinessPartnerTaxNumber extends _A_BusinessPartnerTaxNumberAspect(__.Entity) {}
 export class A_BusinessPartnerTaxNumber_ extends Array<A_BusinessPartnerTaxNumber> {}
 
+export function _A_BusPartAddrDepdntTaxNmbrAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
+  return class A_BusPartAddrDepdntTaxNmbr extends Base {
+        BusinessPartner?: string;
+        AddressID?: string;
+        BPTaxType?: string;
+        BPTaxNumber?: string;
+        BPTaxLongNumber?: string;
+        AuthorizationGroup?: string;
+    static actions: {
+    }
+  };
+}
+export class A_BusPartAddrDepdntTaxNmbr extends _A_BusPartAddrDepdntTaxNmbrAspect(__.Entity) {}
+export class A_BusPartAddrDepdntTaxNmbr_ extends Array<A_BusPartAddrDepdntTaxNmbr> {}
+
+export function _A_CustAddrDepdntExtIdentifierAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
+  return class A_CustAddrDepdntExtIdentifier extends Base {
+        Customer?: string;
+        AddressID?: string;
+        CustomerExternalRefID?: string;
+    static actions: {
+    }
+  };
+}
+export class A_CustAddrDepdntExtIdentifier extends _A_CustAddrDepdntExtIdentifierAspect(__.Entity) {}
+export class A_CustAddrDepdntExtIdentifier_ extends Array<A_CustAddrDepdntExtIdentifier> {}
+
+export function _A_CustAddrDepdntInformationAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
+  return class A_CustAddrDepdntInformation extends Base {
+        Customer?: string;
+        AddressID?: string;
+        ExpressTrainStationName?: string;
+        TrainStationName?: string;
+        CityCode?: string;
+        County?: string;
+    static actions: {
+    }
+  };
+}
+export class A_CustAddrDepdntInformation extends _A_CustAddrDepdntInformationAspect(__.Entity) {}
+export class A_CustAddrDepdntInformation_ extends Array<A_CustAddrDepdntInformation> {}
+
 export function _A_CustomerAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
   return class A_Customer extends Base {
         Customer?: string;
@@ -504,6 +587,16 @@ export function _A_CustomerAspect<TBase extends new (...args: any[]) => object>(
         TaxNumberType?: string;
         VATRegistration?: string;
         DeletionIndicator?: boolean;
+        ExpressTrainStationName?: string;
+        TrainStationName?: string;
+        CityCode?: string;
+        County?: string;
+        to_CustAddrDepdntExtIdentifier?: __.Association.to.many<A_CustAddrDepdntExtIdentifier_>;
+        to_CustAddrDepdntExtIdentifier_Customer?: string;
+        to_CustAddrDepdntExtIdentifier_AddressID?: string;
+        to_CustAddrDepdntInformation?: __.Association.to.many<A_CustAddrDepdntInformation_>;
+        to_CustAddrDepdntInformation_Customer?: string;
+        to_CustAddrDepdntInformation_AddressID?: string;
         to_CustomerCompany?: __.Association.to.many<A_CustomerCompany_>;
         to_CustomerCompany_Customer?: string;
         to_CustomerCompany_CompanyCode?: string;
@@ -519,6 +612,13 @@ export function _A_CustomerAspect<TBase extends new (...args: any[]) => object>(
         to_CustomerText_Customer?: string;
         to_CustomerText_Language?: string;
         to_CustomerText_LongTextID?: string;
+        to_CustomerUnloadingPoint?: __.Association.to.many<A_CustomerUnloadingPoint_>;
+        to_CustomerUnloadingPoint_Customer?: string;
+        to_CustomerUnloadingPoint_UnloadingPointName?: string;
+        to_CustUnldgPtAddrDepdntInfo?: __.Association.to.many<A_CustUnldgPtAddrDepdntInfo_>;
+        to_CustUnldgPtAddrDepdntInfo_Customer?: string;
+        to_CustUnldgPtAddrDepdntInfo_AddressID?: string;
+        to_CustUnldgPtAddrDepdntInfo_UnloadingPointName?: string;
     static actions: {
     }
   };
@@ -683,6 +783,12 @@ export function _A_CustomerSalesAreaAspect<TBase extends new (...args: any[]) =>
         to_SalesAreaText_Division?: string;
         to_SalesAreaText_Language?: string;
         to_SalesAreaText_LongTextID?: string;
+        to_SlsAreaAddrDepdntInfo?: __.Association.to.many<A_CustSlsAreaAddrDepdntInfo_>;
+        to_SlsAreaAddrDepdntInfo_Customer?: string;
+        to_SlsAreaAddrDepdntInfo_SalesOrganization?: string;
+        to_SlsAreaAddrDepdntInfo_DistributionChannel?: string;
+        to_SlsAreaAddrDepdntInfo_Division?: string;
+        to_SlsAreaAddrDepdntInfo_AddressID?: string;
     static actions: {
     }
   };
@@ -699,6 +805,14 @@ export function _A_CustomerSalesAreaTaxAspect<TBase extends new (...args: any[])
         DepartureCountry?: string;
         CustomerTaxCategory?: string;
         CustomerTaxClassification?: string;
+        to_SlsAreaAddrDepdntTax?: __.Association.to.many<A_CustSlsAreaAddrDepdntTaxInfo_>;
+        to_SlsAreaAddrDepdntTax_Customer?: string;
+        to_SlsAreaAddrDepdntTax_SalesOrganization?: string;
+        to_SlsAreaAddrDepdntTax_DistributionChannel?: string;
+        to_SlsAreaAddrDepdntTax_Division?: string;
+        to_SlsAreaAddrDepdntTax_AddressID?: string;
+        to_SlsAreaAddrDepdntTax_DepartureCountry?: string;
+        to_SlsAreaAddrDepdntTax_CustomerTaxCategory?: string;
     static actions: {
     }
   };
@@ -752,6 +866,48 @@ export function _A_CustomerTextAspect<TBase extends new (...args: any[]) => obje
 export class A_CustomerText extends _A_CustomerTextAspect(__.Entity) {}
 export class A_CustomerText_ extends Array<A_CustomerText> {}
 
+export function _A_CustomerUnloadingPointAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
+  return class A_CustomerUnloadingPoint extends Base {
+        Customer?: string;
+        UnloadingPointName?: string;
+        CustomerFactoryCalenderCode?: string;
+        BPGoodsReceivingHoursCode?: string;
+        IsDfltBPUnloadingPoint?: boolean;
+        MondayMorningOpeningTime?: string;
+        MondayMorningClosingTime?: string;
+        MondayAfternoonOpeningTime?: string;
+        MondayAfternoonClosingTime?: string;
+        TuesdayMorningOpeningTime?: string;
+        TuesdayMorningClosingTime?: string;
+        TuesdayAfternoonOpeningTime?: string;
+        TuesdayAfternoonClosingTime?: string;
+        WednesdayMorningOpeningTime?: string;
+        WednesdayMorningClosingTime?: string;
+        WednesdayAfternoonOpeningTime?: string;
+        WednesdayAfternoonClosingTime?: string;
+        ThursdayMorningOpeningTime?: string;
+        ThursdayMorningClosingTime?: string;
+        ThursdayAfternoonOpeningTime?: string;
+        ThursdayAfternoonClosingTime?: string;
+        FridayMorningOpeningTime?: string;
+        FridayMorningClosingTime?: string;
+        FridayAfternoonOpeningTime?: string;
+        FridayAfternoonClosingTime?: string;
+        SaturdayMorningOpeningTime?: string;
+        SaturdayMorningClosingTime?: string;
+        SaturdayAfternoonOpeningTime?: string;
+        SaturdayAfternoonClosingTime?: string;
+        SundayMorningOpeningTime?: string;
+        SundayMorningClosingTime?: string;
+        SundayAfternoonOpeningTime?: string;
+        SundayAfternoonClosingTime?: string;
+    static actions: {
+    }
+  };
+}
+export class A_CustomerUnloadingPoint extends _A_CustomerUnloadingPointAspect(__.Entity) {}
+export class A_CustomerUnloadingPoint_ extends Array<A_CustomerUnloadingPoint> {}
+
 export function _A_CustomerWithHoldingTaxAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
   return class A_CustomerWithHoldingTax extends Base {
         Customer?: string;
@@ -789,6 +945,7 @@ export function _A_CustSalesPartnerFuncAspect<TBase extends new (...args: any[])
         Supplier?: string;
         PersonnelNumber?: string;
         ContactPerson?: string;
+        AddressID?: string;
         AuthorizationGroup?: string;
     static actions: {
     }
@@ -796,6 +953,89 @@ export function _A_CustSalesPartnerFuncAspect<TBase extends new (...args: any[])
 }
 export class A_CustSalesPartnerFunc extends _A_CustSalesPartnerFuncAspect(__.Entity) {}
 export class A_CustSalesPartnerFunc_ extends Array<A_CustSalesPartnerFunc> {}
+
+export function _A_CustSlsAreaAddrDepdntInfoAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
+  return class A_CustSlsAreaAddrDepdntInfo extends Base {
+        Customer?: string;
+        SalesOrganization?: string;
+        DistributionChannel?: string;
+        Division?: string;
+        AddressID?: string;
+        IncotermsClassification?: string;
+        IncotermsLocation1?: string;
+        IncotermsLocation2?: string;
+        DeliveryIsBlocked?: string;
+        SalesOffice?: string;
+        SalesGroup?: string;
+        ShippingCondition?: string;
+        SupplyingPlant?: string;
+        IncotermsVersion?: string;
+    static actions: {
+    }
+  };
+}
+export class A_CustSlsAreaAddrDepdntInfo extends _A_CustSlsAreaAddrDepdntInfoAspect(__.Entity) {}
+export class A_CustSlsAreaAddrDepdntInfo_ extends Array<A_CustSlsAreaAddrDepdntInfo> {}
+
+export function _A_CustSlsAreaAddrDepdntTaxInfoAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
+  return class A_CustSlsAreaAddrDepdntTaxInfo extends Base {
+        Customer?: string;
+        SalesOrganization?: string;
+        DistributionChannel?: string;
+        Division?: string;
+        AddressID?: string;
+        DepartureCountry?: string;
+        CustomerTaxCategory?: string;
+        CustomerTaxClassification?: string;
+    static actions: {
+    }
+  };
+}
+export class A_CustSlsAreaAddrDepdntTaxInfo extends _A_CustSlsAreaAddrDepdntTaxInfoAspect(__.Entity) {}
+export class A_CustSlsAreaAddrDepdntTaxInfo_ extends Array<A_CustSlsAreaAddrDepdntTaxInfo> {}
+
+export function _A_CustUnldgPtAddrDepdntInfoAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
+  return class A_CustUnldgPtAddrDepdntInfo extends Base {
+        Customer?: string;
+        AddressID?: string;
+        UnloadingPointName?: string;
+        CustomerFactoryCalenderCode?: string;
+        BPGoodsReceivingHoursCode?: string;
+        IsDfltBPUnloadingPoint?: boolean;
+        MondayMorningOpeningTime?: string;
+        MondayMorningClosingTime?: string;
+        MondayAfternoonOpeningTime?: string;
+        MondayAfternoonClosingTime?: string;
+        TuesdayMorningOpeningTime?: string;
+        TuesdayMorningClosingTime?: string;
+        TuesdayAfternoonOpeningTime?: string;
+        TuesdayAfternoonClosingTime?: string;
+        WednesdayMorningOpeningTime?: string;
+        WednesdayMorningClosingTime?: string;
+        WednesdayAfternoonOpeningTime?: string;
+        WednesdayAfternoonClosingTime?: string;
+        ThursdayMorningOpeningTime?: string;
+        ThursdayMorningClosingTime?: string;
+        ThursdayAfternoonOpeningTime?: string;
+        ThursdayAfternoonClosingTime?: string;
+        FridayMorningOpeningTime?: string;
+        FridayMorningClosingTime?: string;
+        FridayAfternoonOpeningTime?: string;
+        FridayAfternoonClosingTime?: string;
+        SaturdayMorningOpeningTime?: string;
+        SaturdayMorningClosingTime?: string;
+        SaturdayAfternoonOpeningTime?: string;
+        SaturdayAfternoonClosingTime?: string;
+        SundayMorningOpeningTime?: string;
+        SundayMorningClosingTime?: string;
+        SundayAfternoonOpeningTime?: string;
+        SundayAfternoonClosingTime?: string;
+    static actions: {
+    }
+  };
+}
+export class A_CustUnldgPtAddrDepdntInfo extends _A_CustUnldgPtAddrDepdntInfoAspect(__.Entity) {}
+export class A_CustUnldgPtAddrDepdntInfo_ extends Array<A_CustUnldgPtAddrDepdntInfo> {}
 
 export function _A_SupplierAspect<TBase extends new (...args: any[]) => object>(Base: TBase) {
   return class A_Supplier extends Base {
@@ -835,6 +1075,7 @@ export function _A_SupplierAspect<TBase extends new (...args: any[]) => object>(
         TaxNumberType?: string;
         SuplrProofOfDelivRlvtCode?: string;
         BR_TaxIsSplit?: boolean;
+        DataExchangeInstructionKey?: string;
         to_SupplierCompany?: __.Association.to.many<A_SupplierCompany_>;
         to_SupplierCompany_Supplier?: string;
         to_SupplierCompany_CompanyCode?: string;

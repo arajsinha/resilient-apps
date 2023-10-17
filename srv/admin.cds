@@ -53,11 +53,11 @@ service AdminService {
     // }
 
     extend service externalBuPa with {
-        event BusinessPartner.Created @(topic: 'tfe/bp/em/ce/sap/s4/beh/businesspartner/v1/BusinessPartner/Created/v1') {
+        event BusinessPartner.Created @(topic: 'tfe/bpfornewteched/em/ce/sap/s4/beh/businesspartner/v1/BusinessPartner/Created/v1') {
             BusinessPartner : String
         }
 
-        event BusinessPartner.Changed @(topic: 'tfe/bp/em/ce/sap/s4/beh/businesspartner/v1/BusinessPartner/Changed/v1') {
+        event BusinessPartner.Changed @(topic: 'tfe/bpfornewteched/em/ce/sap/s4/beh/businesspartner/v1/BusinessPartner/Changed/v1') {
             BusinessPartner : String
         }
     }

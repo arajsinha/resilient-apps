@@ -66,6 +66,7 @@ export function _BusinessPartnerAspect<TBase extends new (...args: any[]) => obj
         BirthDate?: string;
         BusinessPartnerBirthDateStatus?: string;
         BusinessPartnerBirthplaceName?: string;
+        BusinessPartnerDeathDate?: string;
         BusinessPartnerIsBlocked?: boolean;
         BusinessPartnerType?: string;
         ETag?: string;
@@ -80,6 +81,16 @@ export function _BusinessPartnerAspect<TBase extends new (...args: any[]) => obj
         PersonNumber?: string;
         IsMarkedForArchiving?: boolean;
         BusinessPartnerIDByExtSystem?: string;
+        BusinessPartnerPrintFormat?: string;
+        BusinessPartnerOccupation?: string;
+        BusPartMaritalStatus?: string;
+        BusPartNationality?: string;
+        BusinessPartnerBirthName?: string;
+        BusinessPartnerSupplementName?: string;
+        NaturalPersonEmployerName?: string;
+        LastNamePrefix?: string;
+        LastNameSecondPrefix?: string;
+        Initials?: string;
         TradingPartner?: string;
         to_BuPaIdentification?: __.Association.to.many<_businesspartner.A_BuPaIdentification_>;
         to_BuPaIdentification_BusinessPartner?: string;
@@ -89,7 +100,7 @@ export function _BusinessPartnerAspect<TBase extends new (...args: any[]) => obj
         to_BuPaIndustry_IndustrySector?: string;
         to_BuPaIndustry_IndustrySystemType?: string;
         to_BuPaIndustry_BusinessPartner?: string;
-        to_BusinessPartnerAddress?: __.Association.to.many<_businesspartner.A_BusinessPartnerAddress_>;
+        to_BusinessPartnerAddress?: __.Composition.of.many<_businesspartner.A_BusinessPartnerAddress_>;
         to_BusinessPartnerAddress_BusinessPartner?: string;
         to_BusinessPartnerAddress_AddressID?: string;
         to_BusinessPartnerBank?: __.Association.to.many<_businesspartner.A_BusinessPartnerBank_>;
@@ -106,6 +117,10 @@ export function _BusinessPartnerAspect<TBase extends new (...args: any[]) => obj
         to_BusinessPartnerTax?: __.Association.to.many<_businesspartner.A_BusinessPartnerTaxNumber_>;
         to_BusinessPartnerTax_BusinessPartner?: string;
         to_BusinessPartnerTax_BPTaxType?: string;
+        to_BusPartAddrDepdntTaxNmbr?: __.Association.to.many<_businesspartner.A_BusPartAddrDepdntTaxNmbr_>;
+        to_BusPartAddrDepdntTaxNmbr_BusinessPartner?: string;
+        to_BusPartAddrDepdntTaxNmbr_AddressID?: string;
+        to_BusPartAddrDepdntTaxNmbr_BPTaxType?: string;
         to_Customer?: __.Association.to<_businesspartner.A_Customer>;
         to_Customer_Customer?: string;
         to_Supplier?: __.Association.to<_businesspartner.A_Supplier>;
@@ -168,6 +183,9 @@ export function _BusinessPartnerAddressAspect<TBase extends new (...args: any[])
         to_AddressUsage_ValidityEndDate?: string;
         to_AddressUsage_AddressUsage?: string;
         to_AddressUsage_AddressID?: string;
+        to_BPAddrDepdntIntlLocNumber?: __.Association.to<_businesspartner.A_BPAddrDepdntIntlLocNumber>;
+        to_BPAddrDepdntIntlLocNumber_BusinessPartner?: string;
+        to_BPAddrDepdntIntlLocNumber_AddressID?: string;
         to_EmailAddress?: __.Association.to.many<_businesspartner.A_AddressEmailAddress_>;
         to_EmailAddress_AddressID?: string;
         to_EmailAddress_Person?: string;
@@ -227,13 +245,5 @@ export function _AddressAspect<TBase extends new (...args: any[]) => object>(Bas
 export class Address extends _._cuidAspect(_AddressAspect(__.Entity)) {static drafts: typeof Address}
 export class Addresses extends Array<Address> {static drafts: typeof Address}
 
-// event
-export class BusinessPartnerCreated {
-    BusinessPartnerID: string;
-}
-// event
-export class BusinessPartnerChanged {
-    BusinessPartnerID: string;
-}
 // action
 export declare const testFunction: { (): string, __parameters: {}, __returns: string };

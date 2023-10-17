@@ -12,8 +12,6 @@ module.exports.StatusValues = csn.StatusValues
 module.exports.Address = csn.Addresses
 module.exports.Addresses = csn.Addresses
 // events
-module.exports.BusinessPartnerCreated = 'AdminService.BusinessPartnerCreated'
-module.exports.BusinessPartnerChanged = 'AdminService.BusinessPartnerChanged'
 // actions
 module.exports.testFunction = 'testFunction'
 // enums

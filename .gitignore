@@ -8,6 +8,8 @@ default-*.json
 gen/
 node_modules/
 .vscode/
+.cdsrc-private.json
+core
 target/
 # Web IDE, App Studio
 .che/

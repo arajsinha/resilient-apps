@@ -1,0 +1,178 @@
+{
+    "_version": "1.49.0",
+    "sap.app": {
+        "id": "ns.bpverify",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:lrop",
+            "version": "1.11.1",
+            "toolsId": "8d1f7470-baec-4631-a716-05da816e9a6e"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "odata/v4/admin/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "4.0"
+                }
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "businesspartner-verification": {
+                    "semanticObject": "businesspartner",
+                    "action": "verification",
+                    "title": "{{flpTitle}}",
+                    "subTitle": "{{flpSubtitle}}",
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    }
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.119.0",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.ushell": {},
+                "sap.fe.templates": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "ns.bpverify.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                    "synchronizationMode": "None",
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true
+                }
+            },
+            "@i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "uri": "i18n/i18n.properties"
+            }
+        },
+        "resources": {
+            "css": []
+        },
+        "routing": {
+            "config": {},
+            "routes": [
+                {
+                    "pattern": ":?query:",
+                    "name": "BusinessPartnerVerificationList",
+                    "target": "BusinessPartnerVerificationList"
+                },
+                {
+                    "pattern": "BusinessPartnerVerification({key}):?query:",
+                    "name": "BusinessPartnerVerificationObjectPage",
+                    "target": "BusinessPartnerVerificationObjectPage"
+                },
+                {
+                    "pattern": "BusinessPartnerVerification({key})/addresses({key2}):?query:",
+                    "name": "AddressesObjectPage",
+                    "target": "AddressesObjectPage"
+                }
+            ],
+            "targets": {
+                "BusinessPartnerVerificationList": {
+                    "type": "Component",
+                    "id": "BusinessPartnerVerificationList",
+                    "name": "sap.fe.templates.ListReport",
+                    "options": {
+                        "settings": {
+                            "entitySet": "BusinessPartnerVerification",
+                            "variantManagement": "Page",
+                            "navigation": {
+                                "BusinessPartnerVerification": {
+                                    "detail": {
+                                        "route": "BusinessPartnerVerificationObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "BusinessPartnerVerificationObjectPage": {
+                    "type": "Component",
+                    "id": "BusinessPartnerVerificationObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "BusinessPartnerVerification",
+                            "navigation": {
+                                "addresses": {
+                                    "detail": {
+                                        "route": "AddressesObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "AddressesObjectPage": {
+                    "type": "Component",
+                    "id": "AddressesObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "Addresses"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "sap.fiori": {
+        "registrationIds": [],
+        "archeType": "transactional"
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "buildresilientapps.service"
+    }
+}

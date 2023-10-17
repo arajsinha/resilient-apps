@@ -1,0 +1,164 @@
+_schema-version: "3.1"
+ID: btp-resilient-apps
+description: A simple CAP project.
+version: 1.0.0
+modules:
+  - name: btp-resilient-apps-srv
+    type: nodejs
+    path: gen/srv
+    requires:
+      - name: btp-resilient-apps-auth
+      - name: btp-resilient-apps-db
+      - name: btp-resilient-apps-cs
+      - name: btp-resilient-apps-dest
+      - name: btp-resilient-apps-logging
+      - name: btp-resilient-apps-ems
+      - name: btp-resilient-apps-autoscaler
+        parameters:
+          config:
+            instance_min_count: 1
+            instance_max_count: 5
+            scaling_rules:
+              - metric_type: cpu
+                threshold: 6
+                operator: ">"
+                adjustment: "+1"
+                breach_duration_secs: 60
+                cool_down_secs: 60
+              - metric_type: cpu
+                threshold: 6
+                operator: "<="
+                adjustment: "-1"
+                breach_duration_secs: 60
+                cool_down_secs: 60
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm
+  - name: btp-resilient-apps-db-deployer
+    type: hdb
+    path: gen/db
+    requires:
+      - name: btp-resilient-apps-db
+    parameters:
+      buildpack: nodejs_buildpack
+# UI
+  - name: btp-resilient-apps-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: btp-resilient-apps-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - nsbpverify.zip
+          name: nsbpverify
+          target-path: resources/
+  - name: nsbpverify
+    type: html5
+    path: app/bpverify
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms:
+        []
+resources:
+  # Hana HDI Container
+  - name: btp-resilient-apps-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  # Event Mesh
+  - name: btp-resilient-apps-ems
+    type: org.cloudfoundry.managed-service
+    parameters:
+      path: ./event-mesh.json
+      service: enterprise-messaging
+      service-plan: default
+  # Destination Service
+  - name: btp-resilient-apps-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            destinations:
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+              - Authentication: NoAuthentication
+                HTML5.DynamicDestination: true
+                HTML5.ForwardAuthToken: true
+                Name: btp-resilient-apps-srv-api
+                ProxyType: Internet
+                Type: HTTP
+                URL: ~{srv-api/srv-url}
+            existing_destinations_policy: update
+      service: destination
+      service-plan: lite
+    requires:
+      - name: srv-api
+  - name: btp-resilient-apps-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: btp-resilient-apps-html5-srv
+      service-plan: app-host
+  # Authorization and Trust Management
+  - name: btp-resilient-apps-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: btp-resilient-apps-${space}
+        tenant-mode: dedicated
+  # HTML Repository
+  - name: BPVerification_html_repo_host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: BPVerification-html5-app-host-service
+      service-plan: app-host
+  # Connectivity Service
+  - name: btp-resilient-apps-cs
+    parameters:
+      service: connectivity
+      service-plan: lite
+    type: org.cloudfoundry.managed-service
+  # Destination Service
+  - name: btp-resilient-apps-dest
+    parameters:
+      service: destination
+      service-plan: lite
+    type: org.cloudfoundry.managed-service
+  # Application Logging
+  - name: btp-resilient-apps-logging
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: application-logs
+      service-plan: lite
+    # Application Autoscaler
+  - name: btp-resilient-apps-autoscaler
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: autoscaler
+      service-plan: standard
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
